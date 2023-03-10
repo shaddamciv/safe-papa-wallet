@@ -15,7 +15,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/clashdisplay/ClashDisplay-Regular.otf');
+  src: url('./fonts/clashdisplay/ClashDisplay-Regular.otf');
 }
 
 @font-face {
@@ -23,7 +23,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/clashdisplay/ClashDisplay-Medium.otf');
+  src: url('./fonts/clashdisplay/ClashDisplay-Medium.otf');
 }
 
 @font-face {
@@ -31,7 +31,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/clashdisplay/ClashDisplay-Semibold.otf');
+  src: url('./fonts/clashdisplay/ClashDisplay-Semibold.otf');
 }
 
 @font-face {
@@ -39,5 +39,5 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/clashdisplay/ClashDisplay-Bold.otf');
+  src: url('./fonts/clashdisplay/ClashDisplay-Bold.otf');
 }
