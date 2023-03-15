@@ -2,6 +2,9 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { Button, Title } from '@gnosis.pm/safe-react-components'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useAccount, useConnect, useDisconnect } from 'wagmi'
+
+import { InjectedConnector } from 'wagmi/connectors/injected'
 
 const Container = styled.div`
   padding: 1rem;
@@ -18,6 +21,11 @@ const Link = styled.a`
 `
 
 const SafeApp = (): React.ReactElement => {
+  const { address, isConnected } = useAccount()
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  })
+  const { disconnect } = useDisconnect()
   const { sdk, safe } = useSafeAppsSDK()
 
   const submitTx = useCallback(async () => {
@@ -40,17 +48,25 @@ const SafeApp = (): React.ReactElement => {
   }, [safe, sdk])
 
   return (
-    <Container>
-      <Title size="md">Safe: {safe.safeAddress}</Title>
+    <>
+      <Container>
+        <Title size="sm">Wallet Address: {address}</Title>
+        <Button size="lg" onClick={() => (isConnected ? disconnect() : connect())}>
+          {isConnected ? 'Disconnect Wallet' : 'Connect Wallet'}
+        </Button>
+      </Container>
+      <Container>
+        <Title size="md">Safe: {safe.safeAddress}</Title>
 
-      <Button size="lg" color="primary" onClick={submitTx}>
-        Click to send a test transaction
-      </Button>
+        <Button size="lg" color="primary" onClick={submitTx}>
+          Click to send a test transaction
+        </Button>
 
-      <Link href="https://github.com/gnosis/safe-apps-sdk" target="_blank" rel="noreferrer">
-        Documentation
-      </Link>
-    </Container>
+        <Link href="https://github.com/gnosis/safe-apps-sdk" target="_blank" rel="noreferrer">
+          Documentation
+        </Link>
+      </Container>
+    </>
   )
 }
 
