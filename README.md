@@ -1,8 +1,8 @@
-# My Safe App
+# Papa Wallet - Leave your legacy in a poem
 
-## Getting Started
+## Safe AA Hack
 
-Install dependencies and start a local dev server.
+A wallet for parents to invest into their childs portfolio over time.
 
 ```
 yarn install
