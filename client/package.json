@@ -1,0 +1,36 @@
+{
+  "name": "@safe-global/onramp-kit-example-client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.7",
+    "@safe-global/onramp-kit": "^0.1.0-alpha.2",
+    "@safe-global/relay-kit": "^0.1.0-alpha.2",
+    "@safe-global/safe-core-sdk": "^3.3.2",
+    "@safe-global/safe-ethers-lib": "^1.9.2",
+    "@safe-global/safe-react-components": "^2.0.1",
+    "ethers": "^5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "wagmi": "^0.12.2"
+  },
+  "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^3.1.0",
+    "rollup-plugin-polyfill-node": "^0.12.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
+  }
+}
