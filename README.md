@@ -1,49 +1,16 @@
-# Papa Wallet - Leave your legacy in a poem
+This is a [wagmi](https://wagmi.sh) + [RainbowKit](https://rainbowkit.com) + [Vite](https://vitejs.dev/) project bootstrapped with [`create-wagmi`](https://github.com/wagmi-dev/wagmi/tree/main/packages/create-wagmi)
 
-## Safe AA Hack
+# Getting Started
 
-A wallet for parents to invest into their childs portfolio over time.
+Run `npm run dev` in your terminal, and then open [localhost:5173](http://localhost:5173) in your browser.
 
-```
-yarn install
-cp .env.sample .env
-yarn start
-```
+Once the webpage has loaded, changes made to files inside the `src/` directory (e.g. `src/App.tsx`) will automatically update the webpage.
 
-Then:
+# Learn more
 
-- If HTTPS is used (by default enabled)
-  - Open your Safe app locally (by default via https://localhost:3000/) and accept the SSL error.
-- Go to the [Safe web interface](https://app.gnosis-safe.io)
-- Create your test safe
-- Go to Apps -> Manage Apps -> Add Custom App
-- Paste your localhost URL, default is https://localhost:3000/
-- You should see Safe App Starter as a new app
-- Develop your app from there
+To learn more about [Vite](https://vitejs.dev/), [RainbowKit](https://rainbowkit.com) or [wagmi](https://wagmi.sh), check out the following resources:
 
-## Features
-
-Gnosis Safe App Starter combines recommendations described in the following repositories:
-
-- [Safe Apps SDK](https://github.com/gnosis/safe-apps-sdk)
-- [safe-react-components](https://github.com/gnosis/safe-react-components)
-
-You can use the `useSafe` React hook to interact with the Safe Apps SDK
-
-```
-const safe = useSafe();
-console.log(safe.info);
-```
-
-Safe React Components are also integrated and ready to use. [See all components](https://components.gnosis-safe.io/).
-
-## Dependencies
-
-### Included
-- [`@gnosis.pm/safe-react-components`](https://github.com/gnosis/safe-react-components) (UI components themed for the Safe interface)
-- [`@rmeissner/safe-apps-react-sdk`](https://github.com/rmeissner/safe-sdks-js/tree/master/safe-apps-react-sdk) (React hook for the Safe Apps SDK)
-
-### Recommended
-- [`ethers`](https://github.com/ethers-io/ethers.js) (Library for interacting with Ethereum)
-- [`web3`](https://github.com/ethereum/web3.js/) (Library for interacting with Ethereum)
-- [`@studydefi/money-legos`](https://github.com/studydefi/money-legos) (Library for DeFi interactions)
+- [wagmi Documentation](https://wagmi.sh) – learn about wagmi Hooks and API.
+- [wagmi Examples](https://wagmi.sh/examples/connect-wallet) – a suite of simple examples using wagmi.
+- [RainbowKit Documentation](https://rainbowkit.com/docs/introduction) – learn more about RainbowKit (configuration, theming, advanced usage, etc).
+- [Vite Documentation](https://vitejs.dev/) – learn about Vite features and API.
