@@ -1,4 +1,4 @@
-import { configureChains, goerli, useAccount, usePrepareContractWrite, useProvider, useSigner } from 'wagmi'
+import { configureChains, useAccount, usePrepareContractWrite, useProvider, useSigner } from 'wagmi'
 import AccountAbstraction, {
   AccountAbstractionConfig,MetaTransactionData, 
 } from '@safe-global/account-abstraction-kit-poc'
@@ -6,7 +6,8 @@ import { GelatoRelayAdapter, MetaTransactionOptions } from '@safe-global/relay-k
 import { ethers } from 'ethers'
 import EthersAdapter from '@safe-global/safe-ethers-lib'
 import Safe, { SafeFactory } from '@safe-global/safe-core-sdk'
-import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { polygon } from 'wagmi/chains'
+
 import { OperationType, SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
 const safeAddress  = "0x66504688fC4e1C103fD6ffb69fa61369b1F7b38f";
 const storageAddress = "0xa537B479c4C3c226aB3D1d5Fb5368cCc89073Fe0";
@@ -36,8 +37,8 @@ const storageABI = [
 export function Recurring() {
   const { address } = useAccount()
 
-  const providerSafe = useProvider( {chainId: goerli.id})
-  const { data: signer, isError, isLoading } = useSigner( {chainId: goerli.id})
+  const providerSafe = useProvider( {chainId: polygon.id})
+  const { data: signer, isError, isLoading } = useSigner( {chainId: polygon.id})
 
   const { config } = usePrepareContractWrite({
     address: storageAddress,
@@ -75,7 +76,7 @@ console.log(safeTransactionData)
   }
 
   const relayFee = await relayAdapter.getEstimateFee(
-    goerli.id,
+    polygon.id,
     txConfig.GAS_LIMIT,
     txConfig.GAS_TOKEN
   )
@@ -86,7 +87,7 @@ console.log(safeTransactionData)
     // relayAdapter.relayTransaction({
     //   target: safeAddress, // the Safe address
     //   encodedTransaction: config.request.data!!, // Encoded Safe transaction data
-    //   chainId: goerli.id,
+    //   chainId: polygon.id,
     //   options
     // })
     const safeTransaction: MetaTransactionData = {

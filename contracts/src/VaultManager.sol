@@ -1,29 +1,26 @@
 // EnzymeFinanceVault.sol
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.13;
 
 // Import Enzyme Finance contracts
-import "@enzymefinance/protocol/contracts/IAggregation.sol";
-import "@enzymefinance/protocol/contracts/IFundDeployer.sol";
+import "lib/protocol/contracts/release/core/fund-deployer/FundDeployer.sol";
 import "@enzymefinance/protocol/contracts/IFund.sol";
 
 contract EnzymeFinanceVault {
-    IAggregation public aggregation;
-    IFundDeployer public fundDeployer;
-    IFund public fund;
+    FundDeployer public fundDeployer;
     address public owner;
-
     // Constructor
-    constructor() {
-        aggregation = IAggregation(0xAggregationAddress);
-        fundDeployer = IFundDeployer(0xFundDeployerAddress);
+    constructor(address _fundDeployerAddress) {
+        fundDeployer = FundDeployer(_fundDeployerAddress);
         owner = msg.sender;
     }
 
     // Create a new fund
-    function createNewFund(string memory _name, string memory _symbol) public {
+    function createNewFund(string memory _name, 
+                           string memory _symbol,
+                           address _dai) public {
         require(msg.sender == owner, "Only the owner can create a new fund");
 
-        address newFund = fundDeployer.createFund(_name, _symbol);
+        address newFund = fundDeployer.createNewFund(owner, _dai, shares_action_time_lock, fee_manager_config_data, policy_manager_config_data,)
         fund = IFund(newFund);
 
         // Set fund parameters

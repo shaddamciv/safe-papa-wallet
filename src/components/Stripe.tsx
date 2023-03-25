@@ -1,7 +1,7 @@
 import { SafeOnRampKit, SafeOnRampProviderType } from '@safe-global/onramp-kit'
 import { useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
-import { goerli } from 'wagmi/chains'
+import { polygon } from 'wagmi/chains'
 
 
 // create the stripe component class 
