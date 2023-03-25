@@ -1,7 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
 
-import { Account, CreateSafe, Recurring } from './components'
+import { Account, CreateSafe, Recurring, Stripe } from './components'
 
 export function App() {
   const { isConnected } = useAccount()
@@ -13,6 +13,7 @@ export function App() {
       {isConnected && <Account />}
       {isConnected && <CreateSafe />}
       {isConnected && <Recurring />}
+      {isConnected && <Stripe />}
     </>
   )
 }
