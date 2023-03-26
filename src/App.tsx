@@ -1,6 +1,7 @@
 import { useAccount } from "wagmi";
 
-import { Account, CreateSafe, Recurring } from "./components";
+
+import { Account, CreateSafe, Recurring, Stripe  } from "./components";
 import Navbar from "./components/Navbar";
 
 import "./index.css";
@@ -15,6 +16,7 @@ export function App() {
           {isConnected && <Account />}
           {isConnected && <CreateSafe />}
           {isConnected && <Recurring />}
+          {isConnected && <Stripe />}
         </section>
       </main>
     </div>

@@ -1,0 +1,5 @@
+[submodule "contracts/lib/protocol"]
+	path = contracts/lib/protocol
+	url = https://github.com/enzymefinance/protocol
+[submodule "lib/protocol"]
+	branch = v4

@@ -908,6 +908,13 @@
     ethereumjs-util "^7.1.5"
     ethers "^5.7.2"
 
+"@safe-global/onramp-kit@^0.1.0-alpha.2":
+  version "0.1.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@safe-global/onramp-kit/-/onramp-kit-0.1.0-alpha.2.tgz#cf88ecf6db1c3cfbebee267b5b9c800af1e42bad"
+  integrity sha512-GRxYSxJ1AcrCOIY3m52d80pw2NrsFo6iCUYKKlVMwd1pl8K7IVgL9sY2JoEghChayr1orJpv0PW1qypbEaR+1g==
+  dependencies:
+    "@ethersproject/address" "^5.7.0"
+
 "@safe-global/relay-kit@^0.1.0-alpha.2":
   version "0.1.0-alpha.2"
   resolved "https://registry.yarnpkg.com/@safe-global/relay-kit/-/relay-kit-0.1.0-alpha.2.tgz#0691eaf1dd07d93aa6a2aa797ab03f9b049b7e15"
