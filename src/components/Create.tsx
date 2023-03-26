@@ -4,6 +4,7 @@ import Safe, { SafeAccountConfig } from "@safe-global/safe-core-sdk";
 import { ethers } from "ethers";
 import EthersAdapter from "@safe-global/safe-ethers-lib";
 import { SafeFactory } from "@safe-global/safe-core-sdk";
+
 import { polygon } from "wagmi/chains";
 import {
   OperationType,
@@ -1508,7 +1509,6 @@ export function CreateSafe() {
       threshold,
       // ...
     };
-
     const safeSdk: Safe = await safeFactory.deploySafe({ safeAccountConfig });
     console.log(safeSdk);
 
@@ -1579,6 +1579,7 @@ export function CreateSafe() {
       value: "0",
       data: config.request.data!!,
     };
+
 
     console.log(safeTransactionData);
     const safeSdk = await Safe.create({
