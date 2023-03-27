@@ -105,7 +105,7 @@ export function Recurring() {
       gasLimit: txConfig.GAS_LIMIT,
       gasToken: txConfig.GAS_TOKEN,
     };
-    const safeAccountAbstraction = new AccountAbstraction(signer);
+    const safeAccountAbstraction = new AccountAbstraction(signer!!);
     const sdkConfig: AccountAbstractionConfig = {
       relayAdapter,
     };
