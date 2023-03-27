@@ -1499,7 +1499,7 @@ export function CreateSafe() {
 
     const safeFactory = await SafeFactory.create({ ethAdapter });
 
-    const owners = [address];
+    const owners = [address!!];
     const threshold = 1;
 
     console.log("owners ", owners);
