@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 
 import "./index.css";
+import Wizard from "./components/Wizard";
 
 export function App() {
   const { isConnected } = useAccount();
@@ -12,7 +13,8 @@ export function App() {
     <div className="h-screen">
 
     <Navbar />
-    <Home />
+    {/* <Home /> */}
+    <Wizard />
   </div>
     // <div className="text-white bg-gradient-to-tr from-[#111827] to-black min-h-screen">
     //   
