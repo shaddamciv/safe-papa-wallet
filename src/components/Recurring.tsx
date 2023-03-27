@@ -76,10 +76,10 @@ export function Recurring() {
     };
 
     const relayFee = await relayAdapter.getEstimateFee(
-      goerli.id,
+      polygon.id,
       txConfig.GAS_LIMIT,
       txConfig.GAS_TOKEN
-    );
+    )
     const safeBalance = await safeSdk.getBalance();
     console.log({
       minSafeBalance: ethers.utils.formatEther(relayFee.toString()),
@@ -88,16 +88,6 @@ export function Recurring() {
       safeBalance: ethers.utils.formatEther(safeBalance.toString()),
     });
 
-
-  const relayFee = await relayAdapter.getEstimateFee(
-    polygon.id,
-    txConfig.GAS_LIMIT,
-    txConfig.GAS_TOKEN
-  )
-  const safeBalance = await safeSdk.getBalance()
-  console.log({ minSafeBalance: ethers.utils.formatEther(relayFee.toString()) })
-  console.log({ safeBalance: ethers.utils.formatEther(safeBalance.toString()) })
-  
 
     // relayAdapter.relayTransaction({
     //   target: safeAddress, // the Safe address
