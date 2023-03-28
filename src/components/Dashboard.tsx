@@ -35,7 +35,10 @@ const Dashboard = () => {
             
           </div>
           <div className="stats shadow">
-            
+          <div className="stat">
+              <div className="stat-title">Wallet Balance</div>
+              <div className="stat-value">22220 USDC </div>
+            </div>
             
           </div>
           <div className="stats shadow">
