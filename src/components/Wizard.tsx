@@ -1,4 +1,7 @@
 const Wizard = () => {
+    function kids(){
+        console.log("kids range Selected");
+    }
   return (
     <div className="flex space-y-10 flex-col items-center justify-center">
        <div className="p-100 m-100">
@@ -35,11 +38,10 @@ const Wizard = () => {
             
         <button className="mb-10 btn btn-wide gap-2">
             Connect Stripe
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-        </button>
+            </button>
         </fieldset>
         <fieldset className="mb-10 daisyui-form-wizard__step" data-wizard="#2">
-        <input type="range" min="0" max="100" value="40" className="range" />
+            <input onChange={kids} type="range" min="0" max="100" value="40" className="range" />
         </fieldset>
         <fieldset className="daisyui-form-wizard__step" data-wizard="#3">
             
