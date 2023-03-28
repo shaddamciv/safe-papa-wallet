@@ -92,9 +92,11 @@ const Dashboard = () => {
               </tr>
             </tbody>
           </table>
-          <button className="btn ">Add Subscription</button>
+          <button className="btn ">Add Subscription [TODO]</button>
         </div>
       </div>
+      <button className="btn ">Guardian Account Recovery [TODO]</button>
+
     </div>
 
     </div>
