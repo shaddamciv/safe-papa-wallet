@@ -1,7 +1,57 @@
+import { Account, CreateSafe, Recurring, Stripe  } from "../components";
+import { useAccount } from "wagmi";
+import { SetStateAction, useState } from "react";
+
+
 const Wizard = () => {
-    function kids(){
-        console.log("kids range Selected");
+    const { isConnected } = useAccount();
+    const [selfManage, setSelfManage] = useState(true);
+    const [guardianAddress, setGuardianAddress] = useState("");
+    
+    //get the info for addresses of kids - later give ability to generate this
+    const [numAddresses, setNumAddresses] = useState(1);
+    const [addresses, setAddresses] = useState([]);
+    
+    const handleGuardianAddressChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setGuardianAddress(event.target.value);
+    };
+    const handleNumAddressesChange = (event: { target: { value: string; }; }) => {
+        setNumAddresses(parseInt(event.target.value));
+      };
+    
+    const handleAddressChange = (event: { target: { value: any; }; }, index: string | number) => {
+    const newAddresses = [...addresses];
+    newAddresses[index] = event.target.value;
+    setAddresses(newAddresses);
+    };
+    const addressInputs = [];
+    for (let i = 0; i < numAddresses; i++) {
+        addressInputs.push(
+        <div key={i}>
+            <label
+            htmlFor={`address-${i}`}
+            className="block text-gray-700 font-bold mb-2"
+            >
+            Address Child {i + 1}
+            </label>
+            <input
+            id={`address-${i}`}
+            type="text"
+            placeholder="0x1234..."
+            value={addresses[i] || ""}
+            onChange={(event) => handleAddressChange(event, i)}
+            className="appearance-none border border-gray-400 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline  w-full max-w-xs"
+            />
+        </div>
+        );
     }
+    
+  const handleCheckboxChange = (event: any) => {
+    setSelfManage(true);
+  };
+  const handleCheckboxCommon = (event: any) => {
+    setSelfManage(false);
+  };
   return (
     <div className="flex space-y-10 flex-col items-center justify-center">
        <div className="p-100 m-100">
@@ -13,7 +63,7 @@ const Wizard = () => {
             <h2 className="card-title">Self Managed (Free!)</h2>
             <p>Create your own Portfolio, we will help you setup your vault, but the assets you choose will be decided by you!</p>
             <div className="card-actions justify-end">
-            <button className="btn btn-primary">I will do it myself!</button>
+            <input type="checkbox" onChange={handleCheckboxChange} checked={selfManage} className="checkbox" />
             </div>
         </div>
         </div>
@@ -24,7 +74,8 @@ const Wizard = () => {
                 <h2 className="card-title">Common Vault (Yearly 1% fee!)</h2>
                 <p>A common portfolio of Gold, Silver, Bitcoin, Ethereum and choice privacy coins. Auto rebalancing</p>
                 <div className="card-actions justify-end">
-                <button className="btn btn-primary">Fire and Forget!</button>
+                <input type="checkbox" onChange={handleCheckboxCommon} checked={!selfManage} className="checkbox" />
+
                 </div>
             </div>
             </div>
@@ -32,14 +83,8 @@ const Wizard = () => {
             </div>
        </div>
        <div>
-    <form className="pt-100 daisyui-form-wizard">
-        
-        <fieldset className="daisyui-form-wizard__step" data-wizard="#1">
-            
-        <button className="mb-10 btn btn-wide gap-2">
-            Connect Stripe
-            </button>
-        </fieldset>
+       {isConnected && <Stripe />}
+    {/* <form className="pt-100 daisyui-form-wizard">
         <fieldset className="mb-10 daisyui-form-wizard__step" data-wizard="#2">
             <input onChange={kids} type="range" min="0" max="100" value="40" className="range" />
         </fieldset>
@@ -49,7 +94,38 @@ const Wizard = () => {
             
         </fieldset>
 
-    </form>
+    </form> */}
+    <label className="label">
+        <span className="label-text">wife/husband/friend/guardian (1)</span>
+    </label>
+    <input
+          id="address"
+          type="text"
+          placeholder="0xFF8F017..."
+          value={guardianAddress}
+          onChange={handleGuardianAddressChange}
+          className="appearance-none border border-gray-400 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline  w-full max-w-xs"
+        />
+    <label
+            htmlFor="num-addresses"
+            className="block text-gray-700 font-bold mb-2"
+            >
+        How many children do you have?
+        </label>
+        <select
+          id="num-addresses"
+          value={numAddresses}
+          onChange={handleNumAddressesChange}
+          className="appearance-none border border-gray-400 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline  w-full max-w-xs"
+        >
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+          {/* add more options if needed */}
+        </select>
+        {addressInputs}
+
+    {isConnected && <CreateSafe />}
     </div>
     <div>
 
@@ -57,10 +133,10 @@ const Wizard = () => {
     
     <ul className="steps m-10">
             <li className="step step-primary">Choose plan</li>
-            <li className="step">Create Safe</li>
-            <li className="step">Create Vault</li>
-            <li className="step">Set up Automations</li>
-            <li className="step">Finish & Goto Dashboard</li>
+            <li className="step">Creating Safe</li>
+            <li className="step">Setting up the Vault</li>
+            <li className="step">Setting up the Automations</li>
+            <li className="step">Finishing up!</li>
         </ul>
   </div>
   );

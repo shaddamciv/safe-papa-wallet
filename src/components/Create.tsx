@@ -1,4 +1,4 @@
-import { Address, useAccount, useEnsName, useSigner } from "wagmi";
+import { Address, useAccount, useSigner } from "wagmi";
 import { prepareWriteContract, readContract } from "@wagmi/core";
 import Safe, { SafeAccountConfig } from "@safe-global/safe-core-sdk";
 import { ethers } from "ethers";
@@ -16,7 +16,7 @@ export function CreateSafe() {
   const comptroller = "0xDdEe6C75EADF626F44DDdbF3Fef78BA3CC2452E8";
   const wmaticAddress = "0xfb6A5De9e90B8280da409635C7B2859948a15f71";
   const { address } = useAccount();
-  const { data: ensName } = useEnsName({ address });
+
   const {
     data: signer,
     isError,
@@ -1598,19 +1598,19 @@ export function CreateSafe() {
   };
   return (
     <div>
-      <button onClick={createSafe}>Create new safe</button>
-      <button
+      <button onClick={createSafe}  className="mb-10 btn btn-wide gap-2" >Start Journey!</button>
+      {/* <button 
         onClick={() =>
           createVault("0x9c93cd8eec03e5f4936c42702311ee8d371cd7e3")
         }
       >
         Create new vault
       </button>
-      <button
+      <button 
         onClick={() => fundVault("0x9c93cd8eec03e5f4936c42702311ee8d371cd7e3")}
       >
         Fund your vault
-      </button>
+      </button> */}
     </div>
   );
 }

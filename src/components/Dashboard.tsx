@@ -1,7 +1,7 @@
 import { useAccount } from "wagmi";
-import { Account, CreateSafe, Recurring, Stripe  } from "../components";
+import { Account, CreateSafe, Recurring} from "../components";
 
-const Navbar = () => {
+const Dashboard = () => {
     
   const { isConnected } = useAccount();
   return (
@@ -12,11 +12,11 @@ const Navbar = () => {
           {isConnected && <Account />}
           {isConnected && <CreateSafe />}
           {isConnected && <Recurring />}
-          {isConnected && <Stripe />}
+          
         </section>
       </main>
     </div>
   );
 };
 
-export default Navbar;
+export default Dashboard;

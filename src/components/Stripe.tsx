@@ -16,6 +16,7 @@ export function Stripe() {
   const startStripe = (async () => {
     
     console.log(walletAddress)
+
     const sessionData = (await onRampClient?.open({
       walletAddress,
       networks: ['polygon'],
@@ -46,7 +47,7 @@ export function Stripe() {
 
   return (
     <div>
-      <button onClick={async () => {startStripe()}}>Start Stripe</button>
+      <button className="mb-10 btn btn-wide gap-2"  onClick={async () => {startStripe()}}>Preload wallet with Stripe</button>
       <div>
           <div id="stripe-root" ref={stripeRootRef}></div>
         </div>
