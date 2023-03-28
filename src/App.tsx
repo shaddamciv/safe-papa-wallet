@@ -13,7 +13,7 @@ export function App() {
     <div className="h-screen">
 
     <Navbar />
-    <Home />
+    {/* <Home /> */}
     <Wizard />
   </div>
     // <div className="text-white bg-gradient-to-tr from-[#111827] to-black min-h-screen">

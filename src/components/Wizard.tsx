@@ -1,22 +1,65 @@
 const Wizard = () => {
   return (
-    <div className="flex h-screen items-center justify-center">
-      
-    <div className="w-1/3 text-center">
-    <article className="prose">
-      <h1 className="font-sans font-'Basis Grotesque Off White Pro',sans-serif text-6xl font-bold">Kickstart Your Retirement Planning</h1>
-      <p className="text-2xl mt-4">Get started on your journey to save periodically for your kids, in a couple of years give them NFT's that allow subscriptions. Finally give them the whole amount when they hit 30.</p>
-      <button className="mt-12 px-6 py-3 rounded-full bg-green-500 text-white font-bold hover:bg-green-600">Get Started</button>
-   </article>
-    </div>
-    <div className="w-1/8 text-center">
-    </div>
-    <div className="w-1/3 hidden md:block pl-6 pt-4 pb-8">
-      <div className="p-4 text-white rounded-lg">
-        
+    <div className="flex space-y-10 flex-col items-center justify-center">
+       <div className="p-100 m-100">
 
-      </div>
+        {/*Step 1*/}
+        <div className="flex space-x-4 flex-row">
+        <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card-body">
+            <h2 className="card-title">Self Managed (Free!)</h2>
+            <p>Create your own Portfolio, we will help you setup your vault, but the assets you choose will be decided by you!</p>
+            <div className="card-actions justify-end">
+            <button className="btn btn-primary">I will do it myself!</button>
+            </div>
+        </div>
+        </div>
+            
+        <div className="flex flex-col w-1/2">
+        <div className=" card w-96 bg-base-100 shadow-xl">
+            <div className="card-body">
+                <h2 className="card-title">Common Vault (Yearly 1% fee!)</h2>
+                <p>A common portfolio of Gold, Silver, Bitcoin, Ethereum and choice privacy coins. Auto rebalancing</p>
+                <div className="card-actions justify-end">
+                <button className="btn btn-primary">Fire and Forget!</button>
+                </div>
+            </div>
+            </div>
+            </div>
+            </div>
+       </div>
+       <div>
+    <form className="pt-100 daisyui-form-wizard">
+        
+        <fieldset className="daisyui-form-wizard__step" data-wizard="#1">
+            
+        <button className="mb-10 btn btn-wide gap-2">
+            Connect Stripe
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+        </button>
+        </fieldset>
+        <fieldset className="mb-10 daisyui-form-wizard__step" data-wizard="#2">
+        <input type="range" min="0" max="100" value="40" className="range" />
+        </fieldset>
+        <fieldset className="daisyui-form-wizard__step" data-wizard="#3">
+            
+            <input type="text" id="input3" name="input3" className="mb-10 input input-bordered w-full max-w-xs" />
+            
+        </fieldset>
+
+    </form>
     </div>
+    <div>
+
+    </div>
+    
+    <ul className="steps m-10">
+            <li className="step step-primary">Choose plan</li>
+            <li className="step">Create Safe</li>
+            <li className="step">Create Vault</li>
+            <li className="step">Set up Automations</li>
+            <li className="step">Finish & Goto Dashboard</li>
+        </ul>
   </div>
   );
 };
