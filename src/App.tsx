@@ -10,8 +10,8 @@ export function App() {
     <div className="h-screen">
 
     <Navbar />
-    {/* <Home /> */}
-    <Wizard />
+    <Home />
+    {/* <Wizard /> */}
   </div>
 
   );
