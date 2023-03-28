@@ -47,7 +47,7 @@ export function Stripe() {
 
   return (
     <div>
-      <button className="mb-10 btn btn-wide gap-2"  onClick={async () => {startStripe()}}>Preload wallet with Stripe</button>
+      <button className="btn btn-wide gap-2"  onClick={async () => {startStripe()}}>Preload wallet with Stripe</button>
       <div>
           <div id="stripe-root" ref={stripeRootRef}></div>
         </div>

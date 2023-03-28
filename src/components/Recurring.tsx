@@ -125,10 +125,9 @@ export function Recurring() {
         disabled={!write}
         onClick={() => write?.()}
       >
-        Store Variable
+        Setup Recurring Investments Via Gelato
       </button>
-      {/* {isLoading && <div>Check Wallet</div>}
-      {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>} */}
+   
     </>
   );
 }

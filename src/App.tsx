@@ -11,9 +11,9 @@ export function App() {
     <div className="h-screen">
 
     <Navbar />
-    {/* <Dashboard /> */}
+    <Dashboard />
     {/* <Home /> */}
-    <Wizard />
+    {/* <Wizard /> */}
   </div>
 
   );
