@@ -7,5 +7,10 @@ Create a portfolio manager using gnosis safe and enzyme finance for families. Ut
 - [x] Stripe Reload - [https://mumbai.polygonscan.com/tx/0xa2a7238dc5d42c5b0a770a89e8dcb2fcd3b46afebd268d6b2ccc3838ba4833f4]
 - [ ] Gelato Automation - In Progress
 - [x] Safe Core SDK
+- [x] Enzyme Vault Creation
+- [ ] Enzyme Vault Deposits
+- [ ] Enzyme Vault Withdrawals
+- [ ] Testing
 - [ ] Superfluid Subscriptions - In Progress
 - [ ] Safe Module Guardian Account Recovery
+- [ ] Principal Amount Recovery Module
