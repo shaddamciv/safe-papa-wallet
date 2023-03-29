@@ -68,24 +68,10 @@ export function Recurring() {
 
     console.log(safeTransactionData);
     const safeSdk = await Safe.create({ ethAdapter: ethAdapter1, safeAddress });
-    const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
 
     const relayAdapter = new GelatoRelayAdapter("FyHwfW4w3qag8BnaSncbMbvYBY3cU9kameB8nUCCCYA_");
       
-    // const txConfig = {
-    //   TO: storageAddress,
-    //   DATA: config.request.data!!,
-    //   VALUE: ethers.BigNumber.from("0"),
-    //   // Options:
-    //   GAS_LIMIT: ethers.BigNumber.from("53321"),
-    //   GAS_TOKEN: ethers.constants.AddressZero,
-    // };
-
-    // const relayFee = await relayAdapter.getEstimateFee(
-    //   goerli.id,
-    //   txConfig.GAS_LIMIT,
-    //   txConfig.GAS_TOKEN
-    // )
+  
     const safeBalance = await safeSdk.getBalance();
     // console.log({
     //   minSafeBalance: ethers.utils.formatEther(relayFee.toString()),
@@ -93,6 +79,9 @@ export function Recurring() {
     console.log({
       safeBalance: ethers.utils.formatEther(safeBalance.toString()),
     });
+    
+    // 1 Balance
+    const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
 
     const signedSafeTx = await safeSdk.signTransaction(safeTransaction)
       
@@ -118,12 +107,24 @@ export function Recurring() {
       const response = await relayAdapter.relayTransaction(relayTransaction)
 
       console.log(`Relay Transaction Task ID: https://relay.gelato.digital/tasks/status/${response.taskId}`)
-    // relayAdapter.relayTransaction({
-    //   target: safeAddress, // the Safe address
-    //   encodedTransaction: config.request.data!!, // Encoded Safe transaction data
-    //   chainId: goerli.id,
-    //   options
-    // })
+  
+      // SyncFEE
+    // const txConfig = {
+    //   TO: storageAddress,
+    //   DATA: config.request.data!!,
+    //   VALUE: ethers.BigNumber.from("0"),
+    //   // Options:
+    //   GAS_LIMIT: ethers.BigNumber.from("53321"),
+    //   GAS_TOKEN: ethers.constants.AddressZero,
+    // };
+
+    // const relayFee = await relayAdapter.getEstimateFee(
+    //   goerli.id,
+    //   txConfig.GAS_LIMIT,
+    //   txConfig.GAS_TOKEN
+    // )
+
+ 
     // const safeTransaction: MetaTransactionData = {
     //   to: txConfig.TO,
     //   data: txConfig.DATA,
