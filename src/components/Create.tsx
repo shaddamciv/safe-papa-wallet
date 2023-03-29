@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function CreateSafe(safeAddress: string, createVaultFlag: boolean) {
+export function CreateSafe({safeAddress: string, createVaultFlag: boolean}:{safeAddress: string, createVaultFlag: boolean}) {
   const fundDeployerAddress = "0x188d356caf78bc6694aee5969fde99a9d612284f";
   const wmaticAddress = "0xfb6A5De9e90B8280da409635C7B2859948a15f71";
   const { address } = useAccount();

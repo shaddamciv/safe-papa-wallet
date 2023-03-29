@@ -1,4 +1,4 @@
-import { Account, CreateSafe, Recurring, Stripe  } from "../components";
+import { CreateSafe } from "../components";
 import { useAccount } from "wagmi";
 import { SetStateAction, useState } from "react";
 import Navbar from "./Navbar";
@@ -12,7 +12,7 @@ const Wizard = () => {
     
     //get the info for addresses of kids - later give ability to generate this
     const [numAddresses, setNumAddresses] = useState(1);
-    const [addresses, setAddresses] = useState([]);
+    const [addresses, setAddresses] = useState([""]);
      
     const handleCreateSafeChange = (event: any) => {
       setCreateSafeFlag(!createSafeFlag);
@@ -24,7 +24,7 @@ const Wizard = () => {
         setNumAddresses(parseInt(event.target.value));
       };
     
-    const handleAddressChange = (event: { target: { value: any; }; }, index: string | number) => {
+    const handleAddressChange = (event: { target: { value: any; }; }, index: number) => {
     const newAddresses = [...addresses];
     newAddresses[index] = event.target.value;
     setAddresses(newAddresses);
@@ -37,7 +37,7 @@ const Wizard = () => {
             <input
             id={`address-${i}`}
             type="text"
-            placeholder={`0xaddress Child ${i + 1}`}
+            placeholder={`Email Child ${i + 1}`}
             value={addresses[i] || ""}
             onChange={(event) => handleAddressChange(event, i)}
             className="appearance-none border border-gray-400 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline  w-full max-w-xs"

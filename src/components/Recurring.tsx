@@ -1,56 +1,69 @@
 import { configureChains, useAccount, usePrepareContractWrite, useProvider, useSigner } from 'wagmi'
 import AccountAbstraction, {
-  AccountAbstractionConfig,MetaTransactionData, 
+  AccountAbstractionConfig, 
 } from '@safe-global/account-abstraction-kit-poc'
 import { GelatoRelayAdapter, MetaTransactionOptions, RelayTransaction } from '@safe-global/relay-kit'
 import { ethers } from 'ethers'
 import EthersAdapter from '@safe-global/safe-ethers-lib'
 import Safe, { SafeFactory } from '@safe-global/safe-core-sdk'
-import { goerli } from 'wagmi/chains'
+import { polygon } from 'wagmi/chains'
 
-import { OperationType, SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
+import { MetaTransactionData, OperationType, SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
 const safeAddress  = "0x66504688fC4e1C103fD6ffb69fa61369b1F7b38f";
 const storageAddress = "0xa537B479c4C3c226aB3D1d5Fb5368cCc89073Fe0";
+const comptroller = "0x68809257c2d0252899f6d472b3c64b70d7891498"; //Comptroller for papa wallet
+const usdcAddress = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
 const gasLimit = '100000'
 const options: MetaTransactionOptions = {
   gasLimit: ethers.BigNumber.from(gasLimit),
   isSponsored: true
 }
-const storageABI = [
-  {
-    inputs: [],
-    name: "retrieve",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "store",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-]; //just a sample contract created for testing
+const usdcABI = [{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "approve",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+}]
+const comptrollerABI = [{
+  inputs: [
+    { internalType: "uint256", name: "_investmentAmount", type: "uint256" },
+    {
+      internalType: "uint256",
+      name: "_minSharesQuantity",
+      type: "uint256",
+    },
+  ],
+  name: "buyShares",
+  outputs: [
+    { internalType: "uint256", name: "sharesReceived_", type: "uint256" },
+  ],
+  stateMutability: "nonpayable",
+  type: "function",
+}];
 
 export function Recurring() {
   const { address } = useAccount();
+  const providerSafe = useProvider( {chainId: polygon.id})
+  const { data: signer, isError, isLoading } = useSigner( {chainId: polygon.id})
 
-  const providerSafe = useProvider( {chainId: goerli.id})
-  const { data: signer, isError, isLoading } = useSigner( {chainId: goerli.id})
-
-
-  const { config } = usePrepareContractWrite({
-    address: storageAddress,
-    abi: storageABI,
-    functionName: "store",
-  });
 
   const write = async () => {
     const ethAdapter1 = new EthersAdapter({
@@ -58,18 +71,33 @@ export function Recurring() {
       signerOrProvider: signer!!,
     });
 
-    console.log("Button clicked");
+    const usdcInterface = new ethers.utils.Interface(usdcABI);
+    const approveData = usdcInterface.encodeFunctionData("approve", [comptroller, ethers.utils.parseUnits("0.0001",6)]);
+    //create comptroller interface
+    const comptrollerInterface = new ethers.utils.Interface(comptrollerABI);
+    const buySharesData = comptrollerInterface.encodeFunctionData("buyShares", [ethers.utils.parseUnits("0.0001",6), 1]);
 
-    const safeTransactionData: SafeTransactionDataPartial = {
-      to: storageAddress,
-      value: "0",
-      data: config.request.data!!,
-    };
+    //print to console both the data to approve and the data to buy shares
+    console.log(approveData);
+    console.log(buySharesData);
+    const safeTransactionData: MetaTransactionData[] = [
+      {
+        to: usdcAddress,
+        data: approveData,
+        value: ethers.BigNumber.from("0"),
+        operation: OperationType.Call
+      },
+      {
+        to: comptroller,
+        data: buySharesData,
+        value:  ethers.BigNumber.from("0"),
+        operation: OperationType.Call
+      }];
 
     console.log(safeTransactionData);
     const safeSdk = await Safe.create({ ethAdapter: ethAdapter1, safeAddress });
 
-    const relayAdapter = new GelatoRelayAdapter("FyHwfW4w3qag8BnaSncbMbvYBY3cU9kameB8nUCCCYA_");
+    const relayAdapter = new GelatoRelayAdapter(import.meta.env.VITE_GELATO_API_KEY!);
       
   
     const safeBalance = await safeSdk.getBalance();
@@ -101,7 +129,7 @@ export function Recurring() {
       const relayTransaction: RelayTransaction = {
         target: safeAddress,
         encodedTransaction: encodedTx,
-        chainId: goerli.id,
+        chainId: polygon.id,
         options
       }
       const response = await relayAdapter.relayTransaction(relayTransaction)
@@ -119,7 +147,7 @@ export function Recurring() {
     // };
 
     // const relayFee = await relayAdapter.getEstimateFee(
-    //   goerli.id,
+    //   polygon.id,
     //   txConfig.GAS_LIMIT,
     //   txConfig.GAS_TOKEN
     // )

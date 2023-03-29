@@ -55,13 +55,14 @@ const Dashboard = () => {
             
             <div className="stat space-y-2 flex-1 flex flex-col items-center justify-center">
             {isConnected && <Recurring />}
-            {isConnected && <Stripe />}
+            
             {isConnected && <FundVault />}            
             </div>
             
           </div>
         </div>
-        <div className="flex-1 flex space-y-10 flex-col items-center justify-center">
+        <div className="flex-1 flex space-x-10 flex-row items-center justify-center">
+          
         <div className="overflow-x-auto">
           <table className="table table-zebra w-full">
             {/* head */}
@@ -105,6 +106,9 @@ const Dashboard = () => {
           </table>
           <button className="btn ">Add Superfluid Subscription [TODO]</button>
         </div>
+        <div className="flex flex-col items-center justify-center">
+          {isConnected && <Stripe />}
+          </div>
       </div>
       <button className="btn ">Guardian Account Recovery [TODO]</button>
 

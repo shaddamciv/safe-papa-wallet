@@ -15,7 +15,6 @@ export function App() {
 
   useEffect(() => {
     if (localStorage.getItem("safe") !== null && localStorage.getItem("safe")!!.length > 2 ) {
-      console.log("safe is not null");
       navigate("/dashboard");
     } 
   }, [isConnected]);
