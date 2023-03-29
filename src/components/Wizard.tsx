@@ -37,7 +37,7 @@ const Wizard = () => {
             <input
             id={`address-${i}`}
             type="text"
-            placeholder={`Email Child ${i + 1}`}
+            placeholder={`0xaddress.. Child ${i + 1}`}
             value={addresses[i] || ""}
             onChange={(event) => handleAddressChange(event, i)}
             className="appearance-none border border-gray-400 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline  w-full max-w-xs"

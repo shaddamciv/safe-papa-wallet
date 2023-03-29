@@ -826,7 +826,7 @@ export function CreateSafe({data}: {data: any}) {
     console.log("Safe creating", data.safeAddress, data.createVaultFlag);
     if(data.safeAddress) {
       setSafe(data.safeAddress)
-      if(!data.createVaultFlag){
+      if(data.createVaultFlag){
         await createVault(data.safeAddress);
         navigate("/dashboard");
       }
