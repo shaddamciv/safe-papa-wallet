@@ -1,16 +1,25 @@
+import { useEffect } from "react";
 import { useAccount } from "wagmi";
 import { Account, CreateSafe, Recurring, Stripe } from "../components";
+import { FundVault } from "./DepositAndBuy";
+import Navbar from "./Navbar";
 
 const Dashboard = () => {
+  
   const { isConnected } = useAccount();
+  
+
   return (
+    <div>
+      <Navbar />
+
     <div className="flex h-screen">
       <div className="flex flex-1  flex-col">
         <div className="flex space-x-10 flex-row items-center justify-center">
           <div className="stats shadow">
             
             <div className="stat">
-              <div className="stat-title">Total Value in Portfolio</div>
+              <div className="stat-title">Total Value in Vault</div>
               <div className="stat-value">89,400</div>
               <div className="stat-desc">Last Deposit 2 days ago</div>
             </div>
@@ -36,8 +45,9 @@ const Dashboard = () => {
           </div>
           <div className="stats shadow">
           <div className="stat">
-              <div className="stat-title">Wallet Balance</div>
+              <div className="stat-title">Safe Wallet</div>
               <div className="stat-value">22220 USDC </div>
+              <div className="stat-desc">Balance is sufficient</div>
             </div>
             
           </div>
@@ -46,6 +56,7 @@ const Dashboard = () => {
             <div className="stat space-y-2 flex-1 flex flex-col items-center justify-center">
             {isConnected && <Recurring />}
             {isConnected && <Stripe />}
+            {isConnected && <FundVault />}            
             </div>
             
           </div>
@@ -92,7 +103,7 @@ const Dashboard = () => {
               </tr>
             </tbody>
           </table>
-          <button className="btn ">Add Subscription [TODO]</button>
+          <button className="btn ">Add Superfluid Subscription [TODO]</button>
         </div>
       </div>
       <button className="btn ">Guardian Account Recovery [TODO]</button>
@@ -101,16 +112,8 @@ const Dashboard = () => {
 
     </div>
 
-    // <div className="text-white bg-gradient-to-tr from-[#111827] to-black min-h-screen">
+    </div>
 
-    //   <main className="flex max-w-[1440px] mx-auto w-full px-[32px] md:px-[64px] lg:px-[120px]">
-    //     <section className="w-full flex flex-col items-center justify-center py-[64px] gap-[20px]">
-    //       {isConnected && <Account />}
-    //       {isConnected && <Recurring />}
-
-    //     </section>
-    //   </main>
-    // </div>
   );
 };
 

@@ -1,19 +1,25 @@
 import { Account, CreateSafe, Recurring, Stripe  } from "../components";
 import { useAccount } from "wagmi";
 import { SetStateAction, useState } from "react";
+import Navbar from "./Navbar";
 
 
 const Wizard = () => {
     const { isConnected } = useAccount();
     const [selfManage, setSelfManage] = useState(true);
-    const [guardianAddress, setGuardianAddress] = useState("");
+    const [createSafeFlag, setCreateSafeFlag] = useState(true);
+    const [finishStep, setFinishStep] = useState(false);
+    const [safeAddress, setSafeAddress] = useState("");
     
     //get the info for addresses of kids - later give ability to generate this
     const [numAddresses, setNumAddresses] = useState(1);
     const [addresses, setAddresses] = useState([]);
-    
-    const handleGuardianAddressChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setGuardianAddress(event.target.value);
+     
+    const handleCreateSafeChange = (event: any) => {
+      setCreateSafeFlag(!createSafeFlag);
+  };
+    const handlesSafeAddressChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+      setSafeAddress(event.target.value);
     };
     const handleNumAddressesChange = (event: { target: { value: string; }; }) => {
         setNumAddresses(parseInt(event.target.value));
@@ -28,16 +34,11 @@ const Wizard = () => {
     for (let i = 0; i < numAddresses; i++) {
         addressInputs.push(
         <div key={i}>
-            <label
-            htmlFor={`address-${i}`}
-            className="block text-gray-700 font-bold mb-2"
-            >
-            Address Child {i + 1}
-            </label>
+            
             <input
             id={`address-${i}`}
             type="text"
-            placeholder="0x1234..."
+            placeholder={`0xaddress Child ${i + 1}`}
             value={addresses[i] || ""}
             onChange={(event) => handleAddressChange(event, i)}
             className="appearance-none border border-gray-400 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline  w-full max-w-xs"
@@ -53,7 +54,9 @@ const Wizard = () => {
     setSelfManage(false);
   };
   return (
+    
     <div className="flex space-y-10 flex-col items-center justify-center">
+      <Navbar />
        <div className="p-100 m-100">
 
         {/*Step 1*/}
@@ -83,7 +86,6 @@ const Wizard = () => {
             </div>
        </div>
        <div>
-       {isConnected && <Stripe />}
     {/* <form className="pt-100 daisyui-form-wizard">
         <fieldset className="mb-10 daisyui-form-wizard__step" data-wizard="#2">
             <input onChange={kids} type="range" min="0" max="100" value="40" className="range" />
@@ -95,17 +97,18 @@ const Wizard = () => {
         </fieldset>
 
     </form> */}
-    <label className="label">
+    {/* <label className="label">
         <span className="label-text">wife/husband/friend/guardian (1)</span>
     </label>
     <input
           id="address"
           type="text"
-          placeholder="0xFF8F017..."
+          placeholder="0xRECOVERYADDRESS..."
           value={guardianAddress}
           onChange={handleGuardianAddressChange}
           className="appearance-none border border-gray-400 rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline  w-full max-w-xs"
-        />
+        /> */}
+        
     <label
             htmlFor="num-addresses"
             className="block text-gray-700 font-bold mb-2"
@@ -125,7 +128,29 @@ const Wizard = () => {
         </select>
         {addressInputs}
 
-    {isConnected && <CreateSafe />}
+    <label
+        htmlFor="num-addresses"
+        className="block text-gray-700 font-bold mb-2"
+        >
+    Lock up for? 
+    <input type="text" placeholder="Years" className="m-2 input-sm border border-gray-400 rounded focus:outline-none focus:shadow-outline " />
+        <div>
+        
+      <input type="checkbox" onChange={handleCreateSafeChange} checked={createSafeFlag} className="checkbox-xs checkbox-primary" />
+       <small>CREATE SAFE</small>
+        </div>
+    
+    <input
+          id="address"
+          type="text"
+          placeholder="0xSAFE ADDRESS..."
+          value={safeAddress}
+          onChange={handlesSafeAddressChange}
+          className={"mt-5 appearance-none border border-gray-400 rounded py-2 px-3 mb-5 leading-tight focus:outline-none focus:shadow-outline  w-full max-w-xs" + (createSafeFlag ? " hidden" : " ")}
+        /> 
+
+    </label>
+    {isConnected && <CreateSafe safeAddress={safeAddress} createVaultFlag={selfManage} />}
     </div>
     <div>
 
@@ -134,9 +159,8 @@ const Wizard = () => {
     <ul className="steps m-10">
             <li className="step step-primary">Choose plan</li>
             <li className="step">Creating Safe</li>
-            <li className="step">Setting up the Vault</li>
-            <li className="step">Setting up the Automations</li>
-            <li className="step">Finishing up!</li>
+            <li className="step">Setting up Vault</li>
+            <li className={"step" + (finishStep? " step-primary ": "")}>Finishing up!</li>
         </ul>
   </div>
   );

@@ -6,12 +6,30 @@ import { WagmiConfig } from 'wagmi'
 
 import { App } from './App'
 import { chains, client } from './wagmi'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Wizard from './components/Wizard'
+import Dashboard from './components/Dashboard'
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App/>,
+  },
+  {
+    path: "/wizard",
+    element: <Wizard/>,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard/>,
+  },
+]);
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <WagmiConfig client={client}>
       <RainbowKitProvider chains={chains}>
-        <App />
+        <RouterProvider router={router} />
       </RainbowKitProvider>
     </WagmiConfig>
   </React.StrictMode>,

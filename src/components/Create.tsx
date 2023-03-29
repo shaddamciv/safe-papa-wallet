@@ -10,711 +10,34 @@ import {
   OperationType,
   SafeTransactionDataPartial,
 } from "@safe-global/safe-core-sdk-types";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export function CreateSafe() {
+export function CreateSafe(safeAddress: string, createVaultFlag: boolean) {
   const fundDeployerAddress = "0x188d356caf78bc6694aee5969fde99a9d612284f";
-  const comptroller = "0xDdEe6C75EADF626F44DDdbF3Fef78BA3CC2452E8";
   const wmaticAddress = "0xfb6A5De9e90B8280da409635C7B2859948a15f71";
   const { address } = useAccount();
+  //create a state variable for safeAddress 
+  const [safe, setSafe] = useState<string>("");
+  const [vault, setVault] = useState<string>("");
+  useEffect(() => {
+    console.log("Use effect triggered", safe)
 
+    // storing input name
+    if(safe!!.length>2)
+      localStorage.setItem("safe", JSON.stringify(safe));
+    if(vault!!.length>2)
+      localStorage.setItem("vault", JSON.stringify(vault));
+    console.log("Set safe vault address")
+
+
+  }, [safe, vault]);
   const {
     data: signer,
     isError,
     isLoading,
   } = useSigner({ chainId: polygon.id });
-  const comptrollerABI = [
-    {
-      inputs: [
-        { internalType: "address", name: "_dispatcher", type: "address" },
-        {
-          internalType: "address",
-          name: "_protocolFeeReserve",
-          type: "address",
-        },
-        { internalType: "address", name: "_fundDeployer", type: "address" },
-        { internalType: "address", name: "_valueInterpreter", type: "address" },
-        {
-          internalType: "address",
-          name: "_externalPositionManager",
-          type: "address",
-        },
-        { internalType: "address", name: "_feeManager", type: "address" },
-        {
-          internalType: "address",
-          name: "_integrationManager",
-          type: "address",
-        },
-        { internalType: "address", name: "_policyManager", type: "address" },
-        {
-          internalType: "address",
-          name: "_gasRelayPaymasterFactory",
-          type: "address",
-        },
-        { internalType: "address", name: "_mlnToken", type: "address" },
-        { internalType: "address", name: "_wethToken", type: "address" },
-      ],
-      stateMutability: "nonpayable",
-      type: "constructor",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "bool",
-          name: "autoProtocolFeeSharesBuyback",
-          type: "bool",
-        },
-      ],
-      name: "AutoProtocolFeeSharesBuybackSet",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "bytes",
-          name: "failureReturnData",
-          type: "bytes",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "sharesAmount",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "buybackValueInMln",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "gav",
-          type: "uint256",
-        },
-      ],
-      name: "BuyBackMaxProtocolFeeSharesFailed",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [],
-      name: "DeactivateFeeManagerFailed",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "address",
-          name: "gasRelayPaymaster",
-          type: "address",
-        },
-      ],
-      name: "GasRelayPaymasterSet",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "sharesDue",
-          type: "uint256",
-        },
-      ],
-      name: "MigratedSharesDuePaid",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [],
-      name: "PayProtocolFeeDuringDestructFailed",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "bytes",
-          name: "failureReturnData",
-          type: "bytes",
-        },
-        {
-          indexed: true,
-          internalType: "address",
-          name: "redeemer",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "sharesAmount",
-          type: "uint256",
-        },
-      ],
-      name: "PreRedeemSharesHookFailed",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [],
-      name: "RedeemSharesInKindCalcGavFailed",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "buyer",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "investmentAmount",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "sharesIssued",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "sharesReceived",
-          type: "uint256",
-        },
-      ],
-      name: "SharesBought",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "redeemer",
-          type: "address",
-        },
-        {
-          indexed: true,
-          internalType: "address",
-          name: "recipient",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "sharesAmount",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "address[]",
-          name: "receivedAssets",
-          type: "address[]",
-        },
-        {
-          indexed: false,
-          internalType: "uint256[]",
-          name: "receivedAssetAmounts",
-          type: "uint256[]",
-        },
-      ],
-      name: "SharesRedeemed",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "address",
-          name: "vaultProxy",
-          type: "address",
-        },
-      ],
-      name: "VaultProxySet",
-      type: "event",
-    },
-    {
-      inputs: [{ internalType: "bool", name: "_isMigration", type: "bool" }],
-      name: "activate",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "uint256", name: "_sharesAmount", type: "uint256" },
-      ],
-      name: "buyBackProtocolFeeShares",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "uint256", name: "_investmentAmount", type: "uint256" },
-        {
-          internalType: "uint256",
-          name: "_minSharesQuantity",
-          type: "uint256",
-        },
-      ],
-      name: "buyShares",
-      outputs: [
-        { internalType: "uint256", name: "sharesReceived_", type: "uint256" },
-      ],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_buyer", type: "address" },
-        { internalType: "uint256", name: "_investmentAmount", type: "uint256" },
-        {
-          internalType: "uint256",
-          name: "_minSharesQuantity",
-          type: "uint256",
-        },
-      ],
-      name: "buySharesOnBehalf",
-      outputs: [
-        { internalType: "uint256", name: "sharesReceived_", type: "uint256" },
-      ],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "calcGav",
-      outputs: [{ internalType: "uint256", name: "gav_", type: "uint256" }],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "calcGrossShareValue",
-      outputs: [
-        { internalType: "uint256", name: "grossShareValue_", type: "uint256" },
-      ],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_extension", type: "address" },
-        { internalType: "uint256", name: "_actionId", type: "uint256" },
-        { internalType: "bytes", name: "_callArgs", type: "bytes" },
-      ],
-      name: "callOnExtension",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "deployGasRelayPaymaster",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "depositToGasRelayPaymaster",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "_deactivateFeeManagerGasLimit",
-          type: "uint256",
-        },
-        {
-          internalType: "uint256",
-          name: "_payProtocolFeeGasLimit",
-          type: "uint256",
-        },
-      ],
-      name: "destructActivated",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "destructUnactivated",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "doesAutoProtocolFeeSharesBuyback",
-      outputs: [
-        { internalType: "bool", name: "doesAutoBuyback_", type: "bool" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getDenominationAsset",
-      outputs: [
-        {
-          internalType: "address",
-          name: "denominationAsset_",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getDispatcher",
-      outputs: [
-        { internalType: "address", name: "dispatcher_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getExternalPositionManager",
-      outputs: [
-        {
-          internalType: "address",
-          name: "externalPositionManager_",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getFeeManager",
-      outputs: [
-        { internalType: "address", name: "feeManager_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getFundDeployer",
-      outputs: [
-        { internalType: "address", name: "fundDeployer_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getGasRelayPaymaster",
-      outputs: [
-        {
-          internalType: "address",
-          name: "gasRelayPaymaster_",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getGasRelayPaymasterFactory",
-      outputs: [
-        {
-          internalType: "address",
-          name: "gasRelayPaymasterFactory_",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getGasRelayTrustedForwarder",
-      outputs: [
-        { internalType: "address", name: "trustedForwarder_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getIntegrationManager",
-      outputs: [
-        {
-          internalType: "address",
-          name: "integrationManager_",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "address", name: "_who", type: "address" }],
-      name: "getLastSharesBoughtTimestampForAccount",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "lastSharesBoughtTimestamp_",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getMlnToken",
-      outputs: [
-        { internalType: "address", name: "mlnToken_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getPolicyManager",
-      outputs: [
-        { internalType: "address", name: "policyManager_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getProtocolFeeReserve",
-      outputs: [
-        {
-          internalType: "address",
-          name: "protocolFeeReserve_",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getSharesActionTimelock",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "sharesActionTimelock_",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getValueInterpreter",
-      outputs: [
-        { internalType: "address", name: "valueInterpreter_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getVaultProxy",
-      outputs: [
-        { internalType: "address", name: "vaultProxy_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getWethToken",
-      outputs: [
-        { internalType: "address", name: "wethToken_", type: "address" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "_denominationAsset",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "_sharesActionTimelock",
-          type: "uint256",
-        },
-      ],
-      name: "init",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "enum IVault.VaultAction",
-          name: "_action",
-          type: "uint8",
-        },
-        { internalType: "bytes", name: "_actionData", type: "bytes" },
-      ],
-      name: "permissionedVaultAction",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_sender", type: "address" },
-        { internalType: "address", name: "_recipient", type: "address" },
-        { internalType: "uint256", name: "_amount", type: "uint256" },
-      ],
-      name: "preTransferSharesHook",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "address", name: "_sender", type: "address" }],
-      name: "preTransferSharesHookFreelyTransferable",
-      outputs: [],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
-      name: "pullWethForGasRelayer",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_recipient", type: "address" },
-        { internalType: "uint256", name: "_sharesQuantity", type: "uint256" },
-        { internalType: "address[]", name: "_payoutAssets", type: "address[]" },
-        {
-          internalType: "uint256[]",
-          name: "_payoutAssetPercentages",
-          type: "uint256[]",
-        },
-      ],
-      name: "redeemSharesForSpecificAssets",
-      outputs: [
-        {
-          internalType: "uint256[]",
-          name: "payoutAmounts_",
-          type: "uint256[]",
-        },
-      ],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_recipient", type: "address" },
-        { internalType: "uint256", name: "_sharesQuantity", type: "uint256" },
-        {
-          internalType: "address[]",
-          name: "_additionalAssets",
-          type: "address[]",
-        },
-        { internalType: "address[]", name: "_assetsToSkip", type: "address[]" },
-      ],
-      name: "redeemSharesInKind",
-      outputs: [
-        { internalType: "address[]", name: "payoutAssets_", type: "address[]" },
-        {
-          internalType: "uint256[]",
-          name: "payoutAmounts_",
-          type: "uint256[]",
-        },
-      ],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "bool",
-          name: "_nextAutoProtocolFeeSharesBuyback",
-          type: "bool",
-        },
-      ],
-      name: "setAutoProtocolFeeSharesBuyback",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "_nextGasRelayPaymaster",
-          type: "address",
-        },
-      ],
-      name: "setGasRelayPaymaster",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_vaultProxy", type: "address" },
-      ],
-      name: "setVaultProxy",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "shutdownGasRelayPaymaster",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_contract", type: "address" },
-        { internalType: "bytes4", name: "_selector", type: "bytes4" },
-        { internalType: "bytes", name: "_encodedArgs", type: "bytes" },
-      ],
-      name: "vaultCallOnContract",
-      outputs: [{ internalType: "bytes", name: "returnData_", type: "bytes" }],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ];
+
   const fundDeployerABI = [
     {
       inputs: [
@@ -1489,9 +812,22 @@ export function CreateSafe() {
       type: "function",
     },
   ];
+  let navigate = useNavigate();
 
   const createSafe = async () => {
-    console.log("Safe creating");
+    console.log("Safe creating", safeAddress, createVaultFlag);
+    if(safeAddress) {
+      setSafe(safeAddress)
+      console.log("Setting vault address")
+      if(!createVaultFlag)
+        await createVault(safeAddress);
+      else{
+        // Somewhere in your code, e.g. inside a handler:
+        return navigate("/dashboard");
+      }
+       
+    }
+      
     const ethAdapter = new EthersAdapter({
       ethers,
       signerOrProvider: signer!!,
@@ -1512,45 +848,16 @@ export function CreateSafe() {
     const safeSdk: Safe = await safeFactory.deploySafe({ safeAccountConfig });
     console.log(safeSdk);
 
-    //once the safe is created, we should try and create the new enzyme fund as well
-    //Then save it in localStorage
-    await createVault(safeSdk.getAddress());
-  };
+    setSafe(safeSdk.getAddress())
 
-  const fundVault = async (owner: string) => {
-    const config = await prepareWriteContract({
-      address: comptroller,
-      abi: comptrollerABI,
-      functionName: "buyShares",
-      args: [ethers.utils.parseEther("0.01"), ethers.utils.parseEther("1")],
-    });
+    
+    if(!createVaultFlag) {
+      await createVault(safeSdk.getAddress());
+      navigate("/dashboard");
+    }
+    else
+       navigate("/dashboard");
 
-    console.log("Vault creating");
-    const ethAdapter1 = new EthersAdapter({
-      ethers,
-      signerOrProvider: signer!!,
-    });
-
-    const safeTransactionData: SafeTransactionDataPartial = {
-      to: fundDeployerAddress,
-      value: "0",
-      data: config.request.data!!,
-    };
-
-    console.log(safeTransactionData);
-    const safeSdk = await Safe.create({
-      ethAdapter: ethAdapter1,
-      safeAddress: owner,
-    });
-    const safeTransaction = await safeSdk.createTransaction({
-      safeTransactionData,
-    });
-    console.log(safeTransaction);
-    const txHash = await safeSdk.getTransactionHash(safeTransaction);
-    const approveTxResponse = await safeSdk.approveTransactionHash(txHash);
-    await approveTxResponse.transactionResponse?.wait();
-    const executeTxResponse = await safeSdk.executeTransaction(safeTransaction);
-    await executeTxResponse.transactionResponse?.wait();
   };
 
   const createVault = async (owner: string) => {
@@ -1561,8 +868,8 @@ export function CreateSafe() {
       functionName: "createNewFund",
       args: [
         owner,
-        "Papa",
-        "PW1",
+        "Papa Wallet",
+        "P-"+(new Date().getTime().toString()),
         wmaticAddress,
         ethers.BigNumber.from(0),
         "0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
@@ -1594,23 +901,14 @@ export function CreateSafe() {
     const approveTxResponse = await safeSdk.approveTransactionHash(txHash);
     await approveTxResponse.transactionResponse?.wait();
     const executeTxResponse = await safeSdk.executeTransaction(safeTransaction);
-    await executeTxResponse.transactionResponse?.wait();
+    let receipt = await executeTxResponse.transactionResponse?.wait();
+    console.log("Vault created");
+    // need to figure out how to get the actual comptroller address here from this receipt
+    setVault(receipt!!.toString());
   };
   return (
     <div>
-      <button onClick={createSafe}  className="mb-10 btn btn-wide gap-2" >Start Journey!</button>
-      {/* <button 
-        onClick={() =>
-          createVault("0x9c93cd8eec03e5f4936c42702311ee8d371cd7e3")
-        }
-      >
-        Create new vault
-      </button>
-      <button 
-        onClick={() => fundVault("0x9c93cd8eec03e5f4936c42702311ee8d371cd7e3")}
-      >
-        Fund your vault
-      </button> */}
+      <button onClick={createSafe}  className="mb-10 btn btn-wide gap-2" >Start Journey!</button>    
     </div>
   );
 }

@@ -155,7 +155,7 @@ export function Recurring() {
         disabled={!write}
         onClick={() => write?.()}
       >
-        Setup Recurring Investments Via Gelato
+        Gasless Vault Fund Topup
       </button>
    
     </>

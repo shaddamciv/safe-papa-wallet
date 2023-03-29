@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import savings from "../assets/savings.png";
 
 
@@ -9,7 +10,8 @@ const Home = () => {
     <article className="prose">
       <h1 className="font-sans font-'Basis Grotesque Off White Pro',sans-serif text-6xl font-bold">Kickstart Your Wealth 3.0 Dashboard</h1>
       <p className="text-2xl mt-4">Get started on your journey to save periodically for your kids, in a couple of years give them NFT's that allow subscriptions. Finally give them the whole amount when they hit 30.</p>
-      <button className="mt-12 px-6 py-3 rounded-full bg-green-500 text-white font-bold hover:bg-green-600">Get Started</button>
+      <Link to={`wizard`}>Get Started</Link>
+      {/* <button className="mt-12 px-6 py-3 rounded-full bg-green-500 text-white font-bold hover:bg-green-600">Get Started</button> */}
    </article>
     </div>
     <div className="w-1/8 text-center">

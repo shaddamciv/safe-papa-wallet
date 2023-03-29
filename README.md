@@ -8,9 +8,11 @@ Create a portfolio manager using gnosis safe and enzyme finance for families. Ut
 - [x] Gelato Automation - In Progress
 - [x] Safe Core SDK
 - [x] Enzyme Vault Creation
-- [ ] Enzyme Vault Deposits
+- [x] Enzyme Vault Deposits
 - [ ] Enzyme Vault Withdrawals
 - [ ] Testing
 - [ ] Superfluid Subscriptions - In Progress
 - [ ] Safe Module Guardian Account Recovery
 - [ ] Principal Amount Recovery Module
+- [ ] Ideal Flow on Production -> Create Safe, Deposit into Vault, Setup Recurring Deposits, [Add Superfluid subscriptions]
+- [ ] Ideal Flow for inheritor to exit -> Create a recovery module for guardian, children to sign.
