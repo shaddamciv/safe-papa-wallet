@@ -4,6 +4,7 @@ import Safe, { SafeAccountConfig } from "@safe-global/safe-core-sdk";
 import { ethers } from "ethers";
 import EthersAdapter from "@safe-global/safe-ethers-lib";
 import { SafeFactory } from "@safe-global/safe-core-sdk";
+import { useStorageState } from 'react-storage-hooks';
 
 import { polygon } from "wagmi/chains";
 import {
@@ -18,20 +19,28 @@ export function CreateSafe(safeAddress: string, createVaultFlag: boolean) {
   const wmaticAddress = "0xfb6A5De9e90B8280da409635C7B2859948a15f71";
   const { address } = useAccount();
   //create a state variable for safeAddress 
-  const [safe, setSafe] = useState<string>("");
-  const [vault, setVault] = useState<string>("");
-  useEffect(() => {
-    console.log("Use effect triggered", safe)
+  const [safe, setSafe] = useStorageState(
+    localStorage,
+    'safe',
+    ""
+  );
+  const [vault, setVault] = useStorageState(
+    localStorage,
+    'vault',
+    ""
+  );
+  // useEffect(() => {
+  //   console.log("Use effect triggered", safe)
 
-    // storing input name
-    if(safe!!.length>2)
-      localStorage.setItem("safe", JSON.stringify(safe));
-    if(vault!!.length>2)
-      localStorage.setItem("vault", JSON.stringify(vault));
-    console.log("Set safe vault address")
+  //   // storing input name
+  //   if(safe!!.length>2)
+  //     localStorage.setItem("safe", JSON.stringify(safe));
+  //   if(vault!!.length>2)
+  //     localStorage.setItem("vault", JSON.stringify(vault));
+  //   console.log("Set safe vault address")
 
 
-  }, [safe, vault]);
+  // }, [safe, vault]);
   const {
     data: signer,
     isError,
@@ -818,46 +827,47 @@ export function CreateSafe(safeAddress: string, createVaultFlag: boolean) {
     console.log("Safe creating", safeAddress, createVaultFlag);
     if(safeAddress) {
       setSafe(safeAddress)
-      console.log("Setting vault address")
-      if(!createVaultFlag)
+      if(!createVaultFlag){
         await createVault(safeAddress);
-      else{
-        // Somewhere in your code, e.g. inside a handler:
-        return navigate("/dashboard");
+        navigate("/dashboard");
       }
-       
+      else{
+        await new Promise(resolve => setTimeout(resolve, 1000)); // 3 sec
+        navigate("/dashboard");
+      }
+
     }
-      
-    const ethAdapter = new EthersAdapter({
-      ethers,
-      signerOrProvider: signer!!,
-    });
+    else{  
+      const ethAdapter = new EthersAdapter({
+        ethers,
+        signerOrProvider: signer!!,
+      });
 
-    const safeFactory = await SafeFactory.create({ ethAdapter });
+      const safeFactory = await SafeFactory.create({ ethAdapter });
 
-    const owners = [address!!];
-    const threshold = 1;
+      const owners = [address!!];
+      const threshold = 1;
 
-    console.log("owners ", owners);
+      console.log("owners ", owners);
 
-    const safeAccountConfig: SafeAccountConfig = {
-      owners,
-      threshold,
-      // ...
-    };
-    const safeSdk: Safe = await safeFactory.deploySafe({ safeAccountConfig });
-    console.log(safeSdk);
+      const safeAccountConfig: SafeAccountConfig = {
+        owners,
+        threshold,
+        // ...
+      };
+      const safeSdk: Safe = await safeFactory.deploySafe({ safeAccountConfig });
+      console.log(safeSdk);
 
-    setSafe(safeSdk.getAddress())
+      setSafe(safeSdk.getAddress())
 
-    
-    if(!createVaultFlag) {
-      await createVault(safeSdk.getAddress());
-      navigate("/dashboard");
+          
+      if(!createVaultFlag) {
+        await createVault(safeSdk.getAddress());
+        navigate("/dashboard");
+      }
+      else
+        navigate("/dashboard");
     }
-    else
-       navigate("/dashboard");
-
   };
 
   const createVault = async (owner: string) => {

@@ -3,7 +3,6 @@ import { useAccount } from "wagmi";
 import { SetStateAction, useState } from "react";
 import Navbar from "./Navbar";
 
-
 const Wizard = () => {
     const { isConnected } = useAccount();
     const [selfManage, setSelfManage] = useState(true);
