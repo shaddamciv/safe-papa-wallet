@@ -84,13 +84,13 @@ export function Recurring() {
       {
         to: usdcAddress,
         data: approveData,
-        value: ethers.BigNumber.from("0"),
+        value: "0",
         operation: OperationType.Call
       },
       {
         to: comptroller,
         data: buySharesData,
-        value:  ethers.BigNumber.from("0"),
+        value:  "0",
         operation: OperationType.Call
       }];
 

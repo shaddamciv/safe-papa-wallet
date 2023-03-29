@@ -11,10 +11,9 @@ import {
   OperationType,
   SafeTransactionDataPartial,
 } from "@safe-global/safe-core-sdk-types";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function CreateSafe({safeAddress: string, createVaultFlag: boolean}:{safeAddress: string, createVaultFlag: boolean}) {
+export function CreateSafe({data}: {data: any}) {
   const fundDeployerAddress = "0x188d356caf78bc6694aee5969fde99a9d612284f";
   const wmaticAddress = "0xfb6A5De9e90B8280da409635C7B2859948a15f71";
   const { address } = useAccount();
@@ -824,11 +823,11 @@ export function CreateSafe({safeAddress: string, createVaultFlag: boolean}:{safe
   let navigate = useNavigate();
 
   const createSafe = async () => {
-    console.log("Safe creating", safeAddress, createVaultFlag);
-    if(safeAddress) {
-      setSafe(safeAddress)
-      if(!createVaultFlag){
-        await createVault(safeAddress);
+    console.log("Safe creating", data.safeAddress, data.createVaultFlag);
+    if(data.safeAddress) {
+      setSafe(data.safeAddress)
+      if(!data.createVaultFlag){
+        await createVault(data.safeAddress);
         navigate("/dashboard");
       }
       else{
@@ -861,7 +860,7 @@ export function CreateSafe({safeAddress: string, createVaultFlag: boolean}:{safe
       setSafe(safeSdk.getAddress())
 
           
-      if(!createVaultFlag) {
+      if(!data.createVaultFlag) {
         await createVault(safeSdk.getAddress());
         navigate("/dashboard");
       }

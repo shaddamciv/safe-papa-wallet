@@ -9,7 +9,7 @@ const Wizard = () => {
     const [createSafeFlag, setCreateSafeFlag] = useState(true);
     const [finishStep, setFinishStep] = useState(false);
     const [safeAddress, setSafeAddress] = useState("");
-    
+    const dataToSend = {"safeAddress": safeAddress, "createVaultFlag":selfManage}
     //get the info for addresses of kids - later give ability to generate this
     const [numAddresses, setNumAddresses] = useState(1);
     const [addresses, setAddresses] = useState([""]);
@@ -149,7 +149,7 @@ const Wizard = () => {
         /> 
 
     </label>
-    {isConnected && <CreateSafe safeAddress={safeAddress} createVaultFlag={selfManage} />}
+    {isConnected && <CreateSafe data={dataToSend} />}
     </div>
     <div>
 
