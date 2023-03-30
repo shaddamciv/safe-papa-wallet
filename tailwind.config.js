@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        grotesque: ["Basis Grotesque Off White Pro", "sans"],
+      },
+    },
   },
   daisyui: {
     themes: ["lofi"],

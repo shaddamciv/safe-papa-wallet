@@ -917,7 +917,7 @@ export function CreateSafe({data}: {data: any}) {
   };
   return (
     <div>
-      <button onClick={createSafe}  className="mb-10 btn btn-wide gap-2" >Start Journey!</button>    
+      <button onClick={createSafe}  className="mb-10 btn btn-wide gap-2 rounded-[4px]" >Start Journey!</button>    
     </div>
   );
 }

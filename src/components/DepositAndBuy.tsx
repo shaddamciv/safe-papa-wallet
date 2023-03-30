@@ -133,12 +133,12 @@ const options: MetaTransactionOptions = {
 
  
   return (
-    <div>
-      <button className="btn btn-secondary max-w-[300px] w-full"
+    <>
+      <button className="btn btn-secondary max-w-[300px] w-full rounded-[4px]"
         onClick={() => fundVault("0x9c93cd8eec03e5f4936c42702311ee8d371cd7e3")}
       >
         Vault Fund Topup
       </button>
-    </div>
+    </>
   );
 }

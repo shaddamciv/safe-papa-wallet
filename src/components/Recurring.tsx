@@ -179,7 +179,7 @@ export function Recurring() {
   return (
     <>
       <button
-        className="btn btn-secondary max-w-[300px] w-full"
+        className="btn btn-secondary max-w-[300px] w-full rounded-[4px]"
         disabled={!write}
         onClick={() => write?.()}
       >
