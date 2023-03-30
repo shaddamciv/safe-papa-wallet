@@ -1,99 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import { Account, CreateSafe, Recurring, Stripe } from "../components";
 import { FundVault } from "./DepositAndBuy";
+import { useFetch } from 'usehooks-ts'
 import Navbar from "./Navbar";
+
+interface Post {
+  fiatTotal: number
+  items: any
+}
+
 
 const Dashboard = () => {
   const { isConnected } = useAccount();
-  /** function startSubscription() {
-    // async function createNewFlow(recipient, flowRate) {
-    //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //   await provider.send("eth_requestAccounts", []);
-    
-    //   const signer = provider.getSigner();
-    
-    //   const chainId = await window.ethereum.request({ method: "eth_chainId" });
-    //   const sf = await Framework.create({
-    //     chainId: Number(chainId),
-    //     provider: provider
-    //   });
-    
-    //   const superSigner = sf.createSigner({ signer: signer });
-    
-    //   console.log(signer);
-    //   console.log(await superSigner.getAddress());
-    //   const daix = await sf.loadSuperToken("fDAIx");
-    
-    //   console.log(daix);
-    
-    //   try {
-    //     const createFlowOperation = daix.createFlow({
-    //       sender: await superSigner.getAddress(),
-    //       receiver: recipient,
-    //       flowRate: flowRate
-    //       // userData?: string
-    //     });
-    
-    //     console.log(createFlowOperation);
-    //     console.log("Creating your stream...");
-        
-        // safe method of sending tx
-        // const ethAdapter1 = new EthersAdapter({
-        //   ethers,
-        //   signerOrProvider: signer!!,
-        // });
+  const [fiatBalance, setFiatBalance] = useState(0);
+  const url:any = "https://safe-client.safe.global/v1/chains/137/safes/0x9C93CD8EEc03e5F4936C42702311Ee8D371cd7E3/balances/usd?trusted=true"
+  const { data, error } = useFetch<Post>(url)
+  console.log(data)
+  useEffect(() => {
+    if(data){
 
-        // const comptrollerInterface = new ethers.utils.Interface(comptrollerABI);
-        // const buySharesData = comptrollerInterface.encodeFunctionData("createFlow", [ethers.utils.parseUnits("0.0001",6), 1]);
+      setFiatBalance(data!!.fiatTotal)
 
-        // const safeTransactionData: MetaTransactionData[] = [
-        //   {
-        //     to: usdcAddress,
-        //     data: approveData,
-        //     value: "0",
-        //     operation: OperationType.Call
-        //   },
-        //   {
-        //     to: comptroller,
-        //     data: buySharesData,
-        //     value: "0",
-        //     operation: OperationType.Call
-        //   }];
-        // const options: MetaTransactionOptions = {
-        //     gasLimit: ethers.BigNumber.from(gasLimit),
-        //     isSponsored: false
-        // }
-        
-        //     console.log(safeTransactionData);
-        //     const safeSdk = await Safe.create({
-        //       ethAdapter: ethAdapter1,
-        //       safeAddress: owner,
-        //     });
-        //     const safeTransaction = await safeSdk.createTransaction({
-        //       safeTransactionData,
-        //     });
-        //     console.log(safeTransaction);
-        //     const txHash = await safeSdk.getTransactionHash(safeTransaction);
-        //     const approveTxResponse = await safeSdk.approveTransactionHash(txHash);
-        //     await approveTxResponse.transactionResponse?.wait();
-        //     const executeTxResponse = await safeSdk.executeTransaction(safeTransaction);
-        //     await executeTxResponse.transactionResponse?.wait();
+    }
 
-    //     const result = await createFlowOperation.exec(superSigner);
-    //     console.log(result);
-    
-    //     console.log(
-    //       `Congrats - you've just created a money stream!
-    //     `
-    //     );
-    //   } catch (error) {
-    //     console.log(
-    //       "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
-    //     );
-    //     console.error(error);
-    //   }
-    } */
+  }, [data]);
   return (
     <div className="bg-[#fafafa]">
       <Navbar />
@@ -126,16 +57,14 @@ const Dashboard = () => {
               <div className="stats shadow">
                 <div className="stat">
                   <div className="stat-title">Safe Wallet</div>
-                  <div className="stat-value">22220 USDC </div>
-                  <div className="stat-desc">Balance is sufficient</div>
+                  <div className="stat-value">{fiatBalance} USDC </div>
+                  <div className="stat-desc">Balance is low</div>
                 </div>
               </div>
             </div>
             <div className="lg:stats lg:shadow flex-[1] w-full h-full">
               <div className="lg:stat gap-[20px] lg:gap-0 flex-1 flex lg:flex-col items-center justify-center">
                 {isConnected && <Recurring />}
-
-                {isConnected && <FundVault />}
               </div>
             </div>
           </div>
@@ -149,7 +78,7 @@ const Dashboard = () => {
                     <th>Subscription Name</th>
                     <th>Child</th>
                     <th>Subscription Amount</th>
-                    <th>NFT Issued</th>
+                    <th>See Flow</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -158,7 +87,7 @@ const Dashboard = () => {
                     <th>1</th>
                     <td>Netflix</td>
                     <td>Child 1</td>
-                    <td aria-value="0xFF8F016D5702113fA734ea78f168c0BF8c059797">0xFF8...797</td>
+                    <td >0xFF8...797</td>
                     <td>
                       <a href="https://app.superfluid.finance/">Subscription</a>
                     </td>
@@ -168,7 +97,7 @@ const Dashboard = () => {
                     <th>2</th>
                     <td>Google Play</td>
                     <td>Child 2</td>
-                    <td aria-value="0xFF8F016D5702113fA734ea78f168c0BF8c059797">0xFF8...797</td>
+                    <td >0xFF8...797</td>
                     <td>
                       <a href="https://app.superfluid.finance/">Subscription</a>
                     </td>
@@ -178,7 +107,7 @@ const Dashboard = () => {
                     <th>3</th>
                     <td>Tuition 1</td>
                     <td>Child 1</td>
-                    <td aria-value="0xFF8F016D5702113fA734ea78f168c0BF8c059797">0xFF8...797</td>
+                    <td >0xFF8...797</td>
                     <td>
                       <a href="https://app.superfluid.finance/">Subscription</a>
                     </td>

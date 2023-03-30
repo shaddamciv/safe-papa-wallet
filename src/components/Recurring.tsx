@@ -9,7 +9,8 @@ import Safe, { SafeFactory } from '@safe-global/safe-core-sdk'
 import { polygon } from 'wagmi/chains'
 
 import { MetaTransactionData, OperationType, SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
-const safeAddress  = "0x66504688fC4e1C103fD6ffb69fa61369b1F7b38f";
+import useStorageState from 'react-use-storage-state'
+
 const storageAddress = "0xa537B479c4C3c226aB3D1d5Fb5368cCc89073Fe0";
 const comptroller = "0x68809257c2d0252899f6d472b3c64b70d7891498"; //Comptroller for papa wallet
 const usdcAddress = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
@@ -63,6 +64,7 @@ export function Recurring() {
   const { address } = useAccount();
   const providerSafe = useProvider( {chainId: polygon.id})
   const { data: signer, isError, isLoading } = useSigner( {chainId: polygon.id})
+  const [safeAddress, setSafeAddress] = useStorageState('safe', "")
 
 
   const write = async () => {
@@ -94,7 +96,7 @@ export function Recurring() {
         operation: OperationType.Call
       }];
 
-    console.log(safeTransactionData);
+    console.log(safeTransactionData,safeAddress);
     const safeSdk = await Safe.create({ ethAdapter: ethAdapter1, safeAddress });
 
     const relayAdapter = new GelatoRelayAdapter(import.meta.env.VITE_GELATO_API_KEY!);
