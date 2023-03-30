@@ -6,7 +6,94 @@ import Navbar from "./Navbar";
 
 const Dashboard = () => {
   const { isConnected } = useAccount();
+  /** function startSubscription() {
+    // async function createNewFlow(recipient, flowRate) {
+    //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+    //   await provider.send("eth_requestAccounts", []);
+    
+    //   const signer = provider.getSigner();
+    
+    //   const chainId = await window.ethereum.request({ method: "eth_chainId" });
+    //   const sf = await Framework.create({
+    //     chainId: Number(chainId),
+    //     provider: provider
+    //   });
+    
+    //   const superSigner = sf.createSigner({ signer: signer });
+    
+    //   console.log(signer);
+    //   console.log(await superSigner.getAddress());
+    //   const daix = await sf.loadSuperToken("fDAIx");
+    
+    //   console.log(daix);
+    
+    //   try {
+    //     const createFlowOperation = daix.createFlow({
+    //       sender: await superSigner.getAddress(),
+    //       receiver: recipient,
+    //       flowRate: flowRate
+    //       // userData?: string
+    //     });
+    
+    //     console.log(createFlowOperation);
+    //     console.log("Creating your stream...");
+        
+        // safe method of sending tx
+        // const ethAdapter1 = new EthersAdapter({
+        //   ethers,
+        //   signerOrProvider: signer!!,
+        // });
 
+        // const comptrollerInterface = new ethers.utils.Interface(comptrollerABI);
+        // const buySharesData = comptrollerInterface.encodeFunctionData("createFlow", [ethers.utils.parseUnits("0.0001",6), 1]);
+
+        // const safeTransactionData: MetaTransactionData[] = [
+        //   {
+        //     to: usdcAddress,
+        //     data: approveData,
+        //     value: "0",
+        //     operation: OperationType.Call
+        //   },
+        //   {
+        //     to: comptroller,
+        //     data: buySharesData,
+        //     value: "0",
+        //     operation: OperationType.Call
+        //   }];
+        // const options: MetaTransactionOptions = {
+        //     gasLimit: ethers.BigNumber.from(gasLimit),
+        //     isSponsored: false
+        // }
+        
+        //     console.log(safeTransactionData);
+        //     const safeSdk = await Safe.create({
+        //       ethAdapter: ethAdapter1,
+        //       safeAddress: owner,
+        //     });
+        //     const safeTransaction = await safeSdk.createTransaction({
+        //       safeTransactionData,
+        //     });
+        //     console.log(safeTransaction);
+        //     const txHash = await safeSdk.getTransactionHash(safeTransaction);
+        //     const approveTxResponse = await safeSdk.approveTransactionHash(txHash);
+        //     await approveTxResponse.transactionResponse?.wait();
+        //     const executeTxResponse = await safeSdk.executeTransaction(safeTransaction);
+        //     await executeTxResponse.transactionResponse?.wait();
+
+    //     const result = await createFlowOperation.exec(superSigner);
+    //     console.log(result);
+    
+    //     console.log(
+    //       `Congrats - you've just created a money stream!
+    //     `
+    //     );
+    //   } catch (error) {
+    //     console.log(
+    //       "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
+    //     );
+    //     console.error(error);
+    //   }
+    } */
   return (
     <div className="bg-[#fafafa]">
       <Navbar />
@@ -100,9 +187,18 @@ const Dashboard = () => {
               </table>
             </div>
             <div className="flex flex-[1] w-full flex-col items-center justify-center h-full">
+            
               {isConnected && <Stripe />}
-              <button className="btn btn-sm md:btn-md max-w-[320px] w-full rounded-[4px]">
-                Add Superfluid Subscription [TODO]
+       
+              <label className="label">
+                <span className="label-text">Enter amount for Subscription</span>
+              </label>
+              <label className="flex-[1] justify-center  input-group">
+                <input type="text" placeholder="0.01" className="input input-bordered" />
+                <span>DAIX</span>
+              </label>
+              <button  className="btn btn-sm md:btn-md max-w-[320px] w-full rounded-[4px]">
+                Add Superfluid Subscription
               </button>
             </div>
           </div>
