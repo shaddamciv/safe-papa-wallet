@@ -83,10 +83,10 @@ const Wizard = () => {
           <div className="flex flex-col w-1/2">
             <div className=" card w-96 bg-base-100 shadow-xl">
               <div className="card-body">
-                <h2 className="card-title">Common Vault (Yearly 1% fee!)</h2>
+                <h2 className="card-title">Common Vault (Yearly 0.01% fee!)</h2>
                 <p>
                   A common portfolio of Gold, Silver, Bitcoin, Ethereum and
-                  choice privacy coins. Auto rebalancing
+                  choice privacy coins. <strong>Use this for the AA hackathon.</strong>
                 </p>
                 <div className="card-actions justify-end">
                   <input

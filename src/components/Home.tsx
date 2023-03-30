@@ -12,8 +12,15 @@ const Home = () => {
           <p className="text-2xl mt-4">
             Get started on your journey to save periodically for your kids, in a
             couple of years give them NFT's that allow subscriptions. Finally
-            give them the whole amount when they hit 30.
-          </p>
+            give them the whole amount when they hit 30. 
+            </p>
+            <p>
+            <strong>
+             !!!!This is a demo site meant for a hackathon. Please do not use real money unless for testing.!!!!
+            </strong>
+          
+            </p>
+            
           <Link to={`wizard`}>
             <button className="btn rounded-[4px] max-w-[250px] w-full">Get Started</button>
           </Link>
