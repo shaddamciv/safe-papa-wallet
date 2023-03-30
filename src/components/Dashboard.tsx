@@ -1,99 +1,108 @@
-import { useEffect } from "react";
-import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
+import Safe, { SafeAccountConfig } from "@safe-global/safe-core-sdk";
+import {
+  MetaTransactionData,
+  OperationType,
+  SafeTransactionDataPartial,
+} from "@safe-global/safe-core-sdk-types";
+import { MetaTransactionOptions } from "@safe-global/account-abstraction-kit-poc";
+import { useAccount, useProvider, useSigner } from 'wagmi';
+import { Signer, ethers } from 'ethers';
+import EthersAdapter from "@safe-global/safe-ethers-lib";
 import { Account, CreateSafe, Recurring, Stripe } from "../components";
+import { Framework } from "@superfluid-finance/sdk-core";
 import { FundVault } from "./DepositAndBuy";
 import Navbar from "./Navbar";
 
 const Dashboard = () => {
   const { isConnected } = useAccount();
-  /** function startSubscription() {
-    // async function createNewFlow(recipient, flowRate) {
-    //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //   await provider.send("eth_requestAccounts", []);
+  const provider = useProvider();
+  const { data: signer, isError, isLoading } = useSigner();
+
+  const [flowRate, setFlowRate] = useState("0");
+
+  async function startSubscription() {    
+    // const chainId = Number((await provider.getNetwork()).chainId);
+    // const sf = await Framework.create({
+    //   chainId,
+    //   provider
+    // });
     
-    //   const signer = provider.getSigner();
+    // const superSigner = sf.createSigner({ signer: signer as Signer });
+    // console.log(await superSigner.getAddress());
+
+    // const daix = await sf.loadSuperToken("fDAIx");
+    // console.log(daix);
     
-    //   const chainId = await window.ethereum.request({ method: "eth_chainId" });
-    //   const sf = await Framework.create({
-    //     chainId: Number(chainId),
-    //     provider: provider
-    //   });
+    try {
+      // const createFlowOperation = daix.createFlow({
+      //   sender: await superSigner.getAddress(),
+      //   receiver: "",
+      //   flowRate: flowRate
+      //   // userData?: string
+      // });
     
-    //   const superSigner = sf.createSigner({ signer: signer });
-    
-    //   console.log(signer);
-    //   console.log(await superSigner.getAddress());
-    //   const daix = await sf.loadSuperToken("fDAIx");
-    
-    //   console.log(daix);
-    
-    //   try {
-    //     const createFlowOperation = daix.createFlow({
-    //       sender: await superSigner.getAddress(),
-    //       receiver: recipient,
-    //       flowRate: flowRate
-    //       // userData?: string
-    //     });
-    
-    //     console.log(createFlowOperation);
-    //     console.log("Creating your stream...");
+      // console.log(createFlowOperation);
+      // console.log("Creating your stream...");
         
-        // safe method of sending tx
-        // const ethAdapter1 = new EthersAdapter({
-        //   ethers,
-        //   signerOrProvider: signer!!,
-        // });
+      // safe method of sending tx
+      const ethAdapter1 = new EthersAdapter({
+        ethers,
+        signerOrProvider: signer!!,
+      });
 
-        // const comptrollerInterface = new ethers.utils.Interface(comptrollerABI);
-        // const buySharesData = comptrollerInterface.encodeFunctionData("createFlow", [ethers.utils.parseUnits("0.0001",6), 1]);
+      const superTokenABI = '{"inputs":[{"internalType":"contract ISuperfluidToken","name":"token","type":"address"},{"internalType":"address","name":"receiver","type":"address"},{"internalType":"int96","name":"flowRate","type":"int96"},{"internalType":"bytes","name":"ctx","type":"bytes"}],"name":"createFlow","outputs":[{"internalType":"bytes","name":"newCtx","type":"bytes"}],"stateMutability":"nonpayable","type":"function"}';
+      const DAIxAddress = "0x1305F6B6Df9Dc47159D12Eb7aC2804d4A33173c2";
 
-        // const safeTransactionData: MetaTransactionData[] = [
-        //   {
-        //     to: usdcAddress,
-        //     data: approveData,
-        //     value: "0",
-        //     operation: OperationType.Call
-        //   },
-        //   {
-        //     to: comptroller,
-        //     data: buySharesData,
-        //     value: "0",
-        //     operation: OperationType.Call
-        //   }];
-        // const options: MetaTransactionOptions = {
-        //     gasLimit: ethers.BigNumber.from(gasLimit),
-        //     isSponsored: false
-        // }
-        
-        //     console.log(safeTransactionData);
-        //     const safeSdk = await Safe.create({
-        //       ethAdapter: ethAdapter1,
-        //       safeAddress: owner,
-        //     });
-        //     const safeTransaction = await safeSdk.createTransaction({
-        //       safeTransactionData,
-        //     });
-        //     console.log(safeTransaction);
-        //     const txHash = await safeSdk.getTransactionHash(safeTransaction);
-        //     const approveTxResponse = await safeSdk.approveTransactionHash(txHash);
-        //     await approveTxResponse.transactionResponse?.wait();
-        //     const executeTxResponse = await safeSdk.executeTransaction(safeTransaction);
-        //     await executeTxResponse.transactionResponse?.wait();
+      const cfaInterface = new ethers.utils.Interface(superTokenABI);
+      const createFlowData = cfaInterface.encodeFunctionData("createFlow", [
+        DAIxAddress,
+        "", //receiver - child
+        flowRate,
+        "0x"
+      ]);
 
-    //     const result = await createFlowOperation.exec(superSigner);
-    //     console.log(result);
-    
-    //     console.log(
-    //       `Congrats - you've just created a money stream!
-    //     `
-    //     );
-    //   } catch (error) {
-    //     console.log(
-    //       "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
-    //     );
-    //     console.error(error);
-    //   }
-    } */
+      const safeTransactionData: MetaTransactionData[] = [
+        {
+          to: "0x6EeE6060f715257b970700bc2656De21dEdF074C",
+          data: createFlowData,
+          value: "0",
+          operation: OperationType.Call
+        }
+      ];
+      
+      console.log(safeTransactionData);
+      const safeSdk = await Safe.create({
+        ethAdapter: ethAdapter1,
+        safeAddress: "", //safe address here
+      });
+
+      const safeTransaction = await safeSdk.createTransaction({
+        safeTransactionData,
+      });
+      console.log(safeTransaction);
+
+      const txHash = await safeSdk.getTransactionHash(safeTransaction);
+      const approveTxResponse = await safeSdk.approveTransactionHash(txHash);
+      await approveTxResponse.transactionResponse?.wait();
+      const executeTxResponse = await safeSdk.executeTransaction(safeTransaction);
+      await executeTxResponse.transactionResponse?.wait();
+
+      // const result = await createFlowOperation.exec(superSigner);
+      // console.log(result);
+  
+      console.log(
+        `Congrats - you've just created a money stream!
+      `
+      );
+    } catch (error) {
+      console.log(
+        "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
+      );
+      console.error(error);
+    }
+  } 
+
   return (
     <div className="bg-[#fafafa]">
       <Navbar />
@@ -194,10 +203,10 @@ const Dashboard = () => {
                 <span className="label-text">Enter amount for Subscription</span>
               </label>
               <label className="flex-[1] justify-center  input-group">
-                <input type="text" placeholder="0.01" className="input input-bordered" />
+                <input type="text" value={flowRate} onChange={(e) => setFlowRate(e.target.value)} className="input input-bordered" />
                 <span>DAIX</span>
               </label>
-              <button  className="btn btn-sm md:btn-md max-w-[320px] w-full rounded-[4px]">
+              <button  className="btn btn-sm md:btn-md max-w-[320px] w-full rounded-[4px]" onClick={startSubscription}>
                 Add Superfluid Subscription
               </button>
             </div>
