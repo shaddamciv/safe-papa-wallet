@@ -3,8 +3,6 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 
 import "./index.css";
-import Wizard from "./components/Wizard";
-import Dashboard from "./components/Dashboard";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
