@@ -14,7 +14,7 @@ They can also request you to pay for subscriptions via superfluid.
 - [x] Enzyme Vault Creation
 - [x] Enzyme Vault Deposits
 - [x] Get the latest enzyme safe/data (there is a graphql api) and show on Dashboard
-- [ ] Superfluid Subscriptions - In Progress
+- [x] Superfluid Subscriptions
 - [ ] Recovery using auth module - In Progress
 - [ ] Use stripe to pay for your kids requests for subscriptions
 - [ ] Enzyme Vault Withdrawals
