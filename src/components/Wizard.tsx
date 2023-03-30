@@ -2,6 +2,7 @@ import { CreateSafe } from "../components";
 import { useAccount } from "wagmi";
 import { SetStateAction, useState } from "react";
 import Navbar from "./Navbar";
+import useStorageState from "react-use-storage-state";
 
 const Wizard = () => {
   const { isConnected } = useAccount();
@@ -12,7 +13,7 @@ const Wizard = () => {
   const dataToSend = { safeAddress: safeAddress, createVaultFlag: selfManage };
   //get the info for addresses of kids - later give ability to generate this
   const [numAddresses, setNumAddresses] = useState(1);
-  const [addresses, setAddresses] = useState([""]);
+  const [addresses, setAddresses] = useStorageState('kids',[""]);
 
   const handleCreateSafeChange = (event: any) => {
     setCreateSafeFlag(!createSafeFlag);
