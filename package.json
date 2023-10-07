@@ -23,7 +23,7 @@
     "daisyui": "^2.51.5",
     "dotenv": "^16.0.3",
     "ethers": "5.7.2",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.1",
     "match-sorter": "^6.3.1",
     "process": "^0.11.10",
     "react": "^18.2.0",
